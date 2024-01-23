@@ -3,22 +3,22 @@
  */
 
 plugins {
-    kotlin("jvm") version ("1.5.30")
-    kotlin("plugin.serialization") version ("1.5.30")
-    id("com.gradle.plugin-publish") version ("0.14.0")
-    id("com.github.gmazzo.buildconfig") version ("3.0.3")
+    kotlin("jvm") version ("1.9.22")
+    kotlin("plugin.serialization") version ("1.9.22")
+    id("com.gradle.plugin-publish") version ("1.2.1")
+    id("com.github.gmazzo.buildconfig") version ("5.3.5")
     id("java-gradle-plugin")
     id("org.gradle.maven-publish")
 }
 
 group = "dev.icerock.gradle"
-version = "3.0.3"
+version = "3.0.4"
 
 repositories {
-    jcenter()
     google()
     mavenCentral()
     gradlePluginPortal()
+    maven(url = "https://jitpack.io")
 }
 
 dependencies {
@@ -30,8 +30,8 @@ dependencies {
         exclude("io.github.cdsap.talaiot", "talaiot-request")
     }
     implementation("com.influxdb:influxdb-client-kotlin:2.2.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
-    implementation("com.gradle:gradle-enterprise-gradle-plugin:3.6.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+    implementation("com.gradle:gradle-enterprise-gradle-plugin:3.16.1")
 }
 
 buildConfig {
@@ -47,32 +47,19 @@ buildConfig {
     }
 }
 
-
 gradlePlugin {
     plugins {
         create("icerock-talaiot") {
             id = "dev.icerock.gradle.talaiot"
             implementationClass = "dev.icerock.gradle.talaiot.TalaiotConfigPlugin"
-        }
-    }
-}
 
-pluginBundle {
-    website = "https://github.com/icerockdev/icerock-talaiot-config-plugin"
-    vcsUrl = "https://github.com/icerockdev/icerock-talaiot-config-plugin"
-    description =
-        "Wrapper for https://github.com/cdsap/Talaiot with predefined configuration for IceRock projects analytics"
-    tags = listOf("talaiot")
-
-    plugins {
-        getByName("icerock-talaiot") {
             displayName = "Talaiot Wrapper for IceRock projects"
+            description =
+                "Wrapper for https://github.com/cdsap/Talaiot with predefined configuration for IceRock projects analytics"
+            tags.set(listOf("talaiot"))
         }
     }
 
-    mavenCoordinates {
-        groupId = project.group as String
-        artifactId = project.name
-        version = project.version as String
-    }
+    website.set("https://github.com/icerockdev/icerock-talaiot-config-plugin")
+    vcsUrl.set("https://github.com/icerockdev/icerock-talaiot-config-plugin")
 }
